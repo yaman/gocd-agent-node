@@ -33,6 +33,8 @@ RUN \
   mv go-agent-17.7.0 /go-agent && \
   rm /tmp/go-agent.zip
 
+RUN npm install -g yarn dredd
+
 ADD docker-entrypoint.sh /
 
 RUN ["chmod", "+x", "/docker-entrypoint.sh"]
