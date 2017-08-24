@@ -1,13 +1,13 @@
 FROM node:alpine
 
-LABEL gocd.version="17.7.0" \
+LABEL gocd.version="17.8.0" \
   description="GoCD agent based on alpine version 3.5" \
   maintainer="GoCD <go-cd-dev@googlegroups.com>" \
-  gocd.full.version="17.7.0-5147" \
+  gocd.full.version="17.8.0-5147" \
   gocd.git.sha="53fdb1b15184f93966059a42429bf9ed0bfdee59"
 
-ADD "https://download.gocd.org/binaries/17.7.0-5147/generic/go-agent-17.7.0-5147.zip" /tmp/go-agent.zip
-ADD https://github.com/krallin/tini/releases/download/v0.14.0/tini-static-amd64 /usr/local/sbin/tini
+ADD https://download.gocd.org/binaries/17.8.0-5277/generic/go-agent-17.8.0-5277.zip /tmp/go-agent.zip
+ADD https://github.com/krallin/tini/releases/download/v0.15.0/tini-static-amd64 /usr/local/sbin/tini
 ADD https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64 /usr/local/sbin/gosu
 ADD https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778-linux.zip /tmp/sonar-scanner.zip
 
@@ -33,7 +33,9 @@ RUN \
   unzip /tmp/go-agent.zip -d / && \
   mv go-agent-17.7.0 /go-agent && \
   rm /tmp/go-agent.zip && \
-  unzip /tmp/sonar-scanner.zip -d /
+  unzip /tmp/sonar-scanner.zip -d / && \
+# use existing jre not the embedded one
+  sed -i '/use_embedded_jre=true/d' /sonar-scanner-3.0.3.778-linux/bin/sonar-scanner
 
 ENV PATH="/sonar-scanner-3.0.3.778-linux/bin:${PATH}"
 
