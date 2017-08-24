@@ -9,6 +9,7 @@ LABEL gocd.version="17.7.0" \
 ADD "https://download.gocd.org/binaries/17.7.0-5147/generic/go-agent-17.7.0-5147.zip" /tmp/go-agent.zip
 ADD https://github.com/krallin/tini/releases/download/v0.14.0/tini-static-amd64 /usr/local/sbin/tini
 ADD https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64 /usr/local/sbin/gosu
+ADD https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778-linux.zip /tmp/sonar-scanner.zip
 
 # allow mounting ssh keys, dotfiles, and the go server config and data
 VOLUME /godata
@@ -31,9 +32,10 @@ RUN \
 # unzip the zip file into /go-agent, after stripping the first path prefix
   unzip /tmp/go-agent.zip -d / && \
   mv go-agent-17.7.0 /go-agent && \
-  rm /tmp/go-agent.zip
+  rm /tmp/go-agent.zip && \
+  unzip /tmp/sonar-scanner.zip -d /
 
-RUN npm install -g yarn dredd
+ENV PATH="/sonar-scanner-3.0.3.778-linux/bin:${PATH}"
 
 ADD docker-entrypoint.sh /
 
