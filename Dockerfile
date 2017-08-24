@@ -31,7 +31,7 @@ RUN \
   apk add --update-cache openjdk8-jre-base git mercurial subversion openssh-client bash && \
 # unzip the zip file into /go-agent, after stripping the first path prefix
   unzip /tmp/go-agent.zip -d / && \
-  mv go-agent-17.7.0 /go-agent && \
+  mv go-agent-17.8.0 /go-agent && \
   rm /tmp/go-agent.zip && \
   unzip /tmp/sonar-scanner.zip -d / && \
 # use existing jre not the embedded one
